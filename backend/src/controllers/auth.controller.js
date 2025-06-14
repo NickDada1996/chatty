@@ -65,5 +65,5 @@ export const login = (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.send("Logout route");
+  res.cookie("token","",{maxAge:0})
 };
