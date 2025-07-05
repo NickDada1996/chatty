@@ -1,12 +1,48 @@
-import { Key, Mail, MessagesSquare, User, Eye, EyeOff } from "lucide-react";
+import {
+  Key,
+  Mail,
+  MessagesSquare,
+  User,
+  Eye,
+  EyeOff,
+  Ellipsis,
+} from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAuthStore } from "../store/useAuthStore.js";
+import toast from "react-hot-toast";
+import RightPage from "../components/RightPage.jsx";
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => e.preventDefault();
+  const { isSigningUp, signup } = useAuthStore();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
+  const validateForm = () => {
+    if (!formData.fullName.trim()) return toast.error("Full name is required");
+    if (!formData.email.trim()) return toast.error("Email is required");
+    if (!/\S+@\S+\.\S+/.test(formData.email))
+      return toast.error("Invalid email format");
+    if (!formData.password) return toast.error("Password is required");
+    if (formData.password.length < 6)
+      return toast.error("Password must be at least 6 characters");
+
+    return true;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    validateForm();
+
+    const success = validateForm();
+    if (success === true) signup(formData);
+  };
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
@@ -36,6 +72,13 @@ const SignupPage = () => {
                 type="text"
                 className="input input-bordered w-full pl-11 focus:outline-none focus:ring-0 focus:border-primary"
                 placeholder="Nick Dada"
+                value={formData.fullName}
+                onChange={(e) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    fullName: e.target.value,
+                  }));
+                }}
               />
             </div>
           </div>
@@ -53,6 +96,10 @@ const SignupPage = () => {
                 type="email"
                 className="input input-bordered w-full pl-11 focus:outline-none focus:ring-0 focus:border-primary"
                 placeholder="abc@gmail.com"
+                value={formData.email}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, email: e.target.value }));
+                }}
               />
             </div>
           </div>
@@ -70,6 +117,13 @@ const SignupPage = () => {
                 type={showPassword ? "text" : "password"}
                 className="input input-bordered w-full pl-11 focus:outline-none focus:ring-0 focus:border-primary"
                 placeholder="••••••••"
+                value={formData.password}
+                onChange={(e) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }));
+                }}
               />
               <button
                 type="button"
@@ -88,8 +142,12 @@ const SignupPage = () => {
           </div>
 
           {/* Submit */}
-          <button type="submit" className="btn btn-primary w-full ">
-            Create Account
+          <button
+            type="submit"
+            className="btn btn-primary w-full "
+            disabled={isSigningUp}
+          >
+            {isSigningUp ? <Ellipsis /> : "Cteate Account"}
           </button>
         </form>
 
@@ -101,6 +159,11 @@ const SignupPage = () => {
           </Link>
         </p>
       </div>
+      {/*right side*/}
+      <RightPage
+        title="Join our community"
+        subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
+      />
     </div>
   );
 };
