@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../lib/utils.js";
+import { generateToken } from "../lib/generateToken.js";
 import cloudinary from "../lib/cloudinary.js";
 
 const signup = async (req, res) => {
