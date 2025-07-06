@@ -45,7 +45,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
+    <div className="min-h-screen grid lg:grid-cols-2 ">
       {/* Left Side */}
       <div className="flex flex-col items-center justify-center px-8 py-12 lg:px-24 space-y-13">
         {/* Logo & Heading */}
@@ -127,7 +127,7 @@ const SignupPage = () => {
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center z-20"
+                className="hover:cursor-pointer absolute inset-y-0 right-0 pr-3 flex items-center z-20"
                 onClick={() => {
                   setShowPassword(!showPassword);
                 }}
