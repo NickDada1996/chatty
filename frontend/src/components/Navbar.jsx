@@ -9,10 +9,10 @@ const Navbar = () => {
   return (
     <nav className="h-14 px-4 flex items-center justify-between ">
       {/* Left side */}
-      <div className="flex items-center gap-2">
+      <Link to="/" className=" flex items-center gap-2">
         <MessagesSquare className="size-6 text-primary" />
-        <span className="text-lg font-semibold">Chatty</span>
-      </div>
+        <h1 className="text-lg font-bold">Chatty</h1>
+      </Link>
 
       {/* Right side */}
       <div className="flex items-center gap-2">
