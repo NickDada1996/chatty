@@ -19,7 +19,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 ">
+    <div className="min-h-[calc(100vh-64px)]  grid lg:grid-cols-2 ">
       {/* Left Side */}
       <div className="flex flex-col items-center justify-center px-8 py-12 lg:px-24 space-y-13">
         {/* Logo & Heading */}

@@ -16,7 +16,7 @@ const SettingsPage = () => {
   const { theme, setTheme } = useThemeStore();
 
   return (
-    <div className="min-h-screen mx-auto max-w-5xl p-4 ">
+    <div className="min-h-[calc(100vh-35px)] mx-auto max-w-5xl p-4 ">
       {" "}
       {/* Top */}
       <div className="space-y-6">

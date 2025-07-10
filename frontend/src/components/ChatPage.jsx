@@ -1,0 +1,86 @@
+import React from "react";
+import { Send } from "lucide-react";
+import { useMessageStore } from "../store/useMessageStore";
+
+const ChatPage = () => {
+  const { selectedUser, draft, setDraft, addMessage, messages } =
+    useMessageStore();
+
+  const handleSendMessage = () => {
+    if (draft.trim()) {
+      addMessage(draft, selectedUser._id);
+    }
+  };
+
+  return (
+    <div className="flex-1 flex flex-col min-h-screen bg-base-100">
+      <div className="flex-1 flex flex-col rounded-xl shadow-sm overflow-hidden border border-base-300">
+        {/* Chat Header */}
+        <div className="px-4 py-3 border-b border-base-300 bg-base-100">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content font-medium">
+              {selectedUser?.fullName?.[0] || "N"}
+            </div>
+            <div>
+              <h3 className="font-medium text-sm">
+                {selectedUser?.fullName || "User"}
+              </h3>
+              {/* online status*/}
+              {/*
+              <p className="text-xs text-base-content/70">Online</p>*/}
+            </div>
+          </div>
+        </div>
+
+        {/* Chat Messages */}
+        <div className="p-4 space-y-4 flex-1  overflow-y-auto bg-base-100">
+          {messages.map((message, index) => {
+            const isSent = message.sender !== selectedUser._id;
+            return (
+              <div
+                key={index}
+                className={`flex ${isSent ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-xl p-3 shadow-sm ${
+                    isSent
+                      ? "bg-primary text-primary-content"
+                      : "bg-base-200 text-base-content"
+                  }`}
+                >
+                  <p className="text-sm">{message.content}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="p-4 border-t border-base-300 bg-base-100">
+          <div className="flex gap-2 h-35">
+            <input
+              type="text"
+              className="input input-bordered flex-1 text-sm h-10"
+              placeholder="Type a message..."
+              value={draft}
+              onChange={(e) => {
+                setDraft(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSendMessage();
+                }
+              }}
+            />
+            <button
+              className="btn btn-primary h-10 min-h-0"
+              onClick={handleSendMessage}
+            >
+              <Send size={18} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ChatPage;

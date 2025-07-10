@@ -6,6 +6,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
+import ChatPage from "./components/ChatPage.jsx";
 import { useAuthStore } from "./store/useAuthStore.js";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -32,6 +33,7 @@ const App = () => {
     <div data-theme={theme}>
       <Navbar />
       <Routes>
+        <Route path="/chat" element={<ChatPage />} />
         <Route
           path="/"
           element={authUser ? <HomePage /> : <Navigate to="/login" />}

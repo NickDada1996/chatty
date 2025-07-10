@@ -15,48 +15,48 @@ export const getUsersForSidebar = async (req, res) => {
   }
 };
 
-export const getMessage = async (req, res) => {
+export const addMessage = async (req, res) => {
   try {
-    const { id: userToChatId } = req.params;
-    const myId = req.user._id;
+    const { content, receiverId } = req.body;
+    const sender = req.user._id;
 
-    const messages = await Message.find({
-      $or: [
-        { senderId: myId, receiverId: userToChatId },
-        { senderId: userToChatId, receiverId: myId },
-      ],
-    });
-    res.status(200).json(messages);
-  } catch (error) {
-    console.log("Error in getMessage controller:", error.message);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-export const sendMessage = async (req, res) => {
-  try {
-    const { text, image } = req.body;
-    const { id: receiverId } = req.params;
-    const senderId = req.user._id;
-
-    let imageUrl = null;
-    if (image) {
-      const uploadImage = await cloudinary.uploader.upload(image);
-      imageUrl = uploadImage.secure_url;
-    }
+    const receiver = await User.findById(receiverId);
+    if (!receiver)
+      return res.status(404).json({ message: "receiver not found" });
 
     const newMessage = new Message({
-      senderId,
-      receiverId,
-      text,
-      image: imageUrl,
+      sender,
+      content,
+      receiver: receiverId,
     });
 
     await newMessage.save();
 
-    res.status(201).json(newMessage);
+    res.status(200).json(newMessage);
   } catch (error) {
-    console.log("Error in message controller", error.message);
+    console.log("Error in addMessage:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getMessage = async (req, res) => {
+  try {
+    const receiverId = req.params.id;
+    const senderId = req.user._id;
+
+    const messages = await Message.find({
+      $or: [
+        {
+          sender: senderId,
+          receiver: receiverId,
+        },
+        { sender: receiverId, receiver: senderId },
+      ],
+    }).sort({ createAt: 1 });
+
+    res.status(200).json(messages);
+  } catch (error) {
+    console.log("Error in getMessages:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
