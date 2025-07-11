@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://chatty-1wj5b02ro-nicktsais-projects.vercel.app",
+      "https://chatty-ten-rho.vercel.app"
     ],
     credentials: true,
   })
@@ -34,7 +34,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:5173",
-      "https://chatty-1wj5b02ro-nicktsais-projects.vercel.app",
+      "https://chatty-ten-rho.vercel.app"
     ],
     credentials: true,
   },
