@@ -1,7 +1,7 @@
 import { Users, MessagesSquare } from "lucide-react";
 import React, { useEffect } from "react";
 import { useMessageStore } from "../store/useMessageStore";
-import ChatPage from "../components/chatPage";
+import ChatPage from "../components/ChatPage";
 
 const HomePage = () => {
   const { users, getUsers, selectedUser, setSelectedUser, getMessage } =
