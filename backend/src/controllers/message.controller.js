@@ -52,7 +52,7 @@ export const getMessage = async (req, res) => {
         },
         { sender: receiverId, receiver: senderId },
       ],
-    }).sort({ createAt: 1 });
+    }).sort({ createdAt: 1 });
 
     res.status(200).json(messages);
   } catch (error) {
