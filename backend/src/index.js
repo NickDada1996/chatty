@@ -5,9 +5,10 @@ import messageRoutes from "./routes/message.route.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { Server } from "socket.io";
+import http from "http";
 
 const app = express();
-
 dotenv.config();
 const PORT = process.env.PORT;
 
@@ -24,7 +25,33 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true,
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  socket.on("send-message", (message) => {
+    // message: { content, sender, receiver }
+    io.to(message.receiver).emit("receive-message", message);
+  });
+
+  socket.on("join", (userId) => {
+    socket.join(userId); 
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
+server.listen(PORT, () => {
   console.log("server is running on PORT:" + PORT);
   connectDB();
 });

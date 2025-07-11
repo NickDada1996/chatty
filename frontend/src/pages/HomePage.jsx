@@ -22,16 +22,6 @@ const HomePage = () => {
                 <Users size={20} />
                 Contacts
               </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  defaultChecked
-                  className="toggle toggle-xs"
-                />
-                <span className="text-sm text-base-content/80">
-                  Show online users
-                </span>
-              </div>
             </div>
             <ul className="mt-4 flex-1 overflow-y-auto space-y-1">
               {users.map((user) => (

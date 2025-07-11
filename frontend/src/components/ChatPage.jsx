@@ -1,14 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Send } from "lucide-react";
 import { useMessageStore } from "../store/useMessageStore";
+import { socket } from "../lib/socket";
+import { useAuthStore } from "../store/useAuthStore";
 
 const ChatPage = () => {
-  const { selectedUser, draft, setDraft, addMessage, messages } =
+  const { selectedUser, draft, setDraft, addMessage, messages, getMessage } =
     useMessageStore();
 
-  const handleSendMessage = () => {
+const {authUser} = useAuthStore();
+
+  
+  useEffect(() => {
+    if (selectedUser?._id) {
+      socket.emit("join", selectedUser._id);
+    }
+  }, [selectedUser]);
+
+  
+  useEffect(() => {
+    socket.on("receive-message", () => {
+      
+      getMessage(selectedUser);
+    });
+    return () => {
+      socket.off("receive-message");
+    };
+  }, [selectedUser, getMessage]);
+
+  const handleSendMessage = async () => {
     if (draft.trim()) {
-      addMessage(draft, selectedUser._id);
+      
+      await addMessage(draft, selectedUser._id);
+
+      
+      const senderId = authUser?._id 
+      socket.emit("send-message", {
+        content: draft,
+        sender: senderId,
+        receiver: selectedUser._id,
+      });
     }
   };
 
@@ -25,9 +56,7 @@ const ChatPage = () => {
               <h3 className="font-medium text-sm">
                 {selectedUser?.fullName || "User"}
               </h3>
-              {/* online status*/}
-              {/*
-              <p className="text-xs text-base-content/70">Online</p>*/}
+              
             </div>
           </div>
         </div>
