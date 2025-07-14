@@ -26,7 +26,7 @@ Authentication: JSON Web Tokens (JWT)
 
 
 
-Deployment: Vercel
+Deployment: Vercel, Render
 
 
 🔗 Live Demo: https://chatty-ten-rho.vercel.app/
