@@ -7,7 +7,6 @@ import { useAuthStore } from "../store/useAuthStore";
 const ChatPage = () => {
   const { selectedUser, draft, setDraft, addMessage, messages, getMessage } =
     useMessageStore();
-
   const { authUser } = useAuthStore();
   const messagesEndRef = useRef(null);
 
@@ -35,8 +34,12 @@ const ChatPage = () => {
   }, [selectedUser, getMessage]);
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current && messages.length > 0) {
+      const chatContainer = messagesEndRef.current.parentElement;
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [messages]);
 
@@ -49,15 +52,14 @@ const ChatPage = () => {
         sender: senderId,
         receiver: selectedUser._id,
       });
-
+      setDraft("");
       getMessage(selectedUser);
     }
   };
 
   return (
-    <div className=" flex flex-1 flex-col bg-base-100">
-      <div className=" flex flex-col rounded-xl shadow-sm overflow-hidden border border-base-300">
-        {/* Chat Header */}
+    <div className="flex flex-1 flex-col bg-base-100 h-full">
+      <div className="flex flex-col rounded-xl shadow-sm overflow-hidden border border-base-300 h-full">
         <div className="px-4 py-3 border-b border-base-300 bg-base-100 shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content font-medium">
@@ -70,8 +72,7 @@ const ChatPage = () => {
             </div>
           </div>
         </div>
-
-        <div className="h-full min-h-0 p-4 space-y-4 overflow-y-auto bg-base-100">
+        <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-base-100">
           {messages.map((message, index) => {
             const isSent = message.sender !== selectedUser._id;
             return (
@@ -93,7 +94,6 @@ const ChatPage = () => {
           })}
           <div ref={messagesEndRef} />
         </div>
-
         <div className="p-4 border-t border-base-300 bg-base-100 shrink-0">
           <div className="flex gap-2">
             <input
@@ -101,9 +101,7 @@ const ChatPage = () => {
               className="input input-bordered flex-1 text-sm h-10"
               placeholder="Type a message..."
               value={draft}
-              onChange={(e) => {
-                setDraft(e.target.value);
-              }}
+              onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSendMessage();
