@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/generateToken.js";
 import cloudinary from "../lib/cloudinary.js";
+import Message from "../models/message.model.js";
 
 const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -117,4 +118,24 @@ const checkAuth = (req, res) => {
   }
 };
 
-export { signup, login, logout, updateProfile, checkAuth };
+const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    await User.findByIdAndDelete(userId);
+    await Message.deleteMany({
+      $or: [{ sender: userId }, { receiver: userId }],
+    });
+    res.cookie("jwt", "", {
+      maxAge: 0,
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.log("Error in deleteAccount controller:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export { signup, login, logout, updateProfile, checkAuth, deleteAccount };

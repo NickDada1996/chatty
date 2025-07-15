@@ -2,11 +2,18 @@ import React, { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useState } from "react";
 import { Camera, Ellipsis, Mail, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
-  const { checkAuth, authUser, isUpdatingProfile, updateProfile } =
-    useAuthStore();
+  const {
+    checkAuth,
+    authUser,
+    isUpdatingProfile,
+    updateProfile,
+    deleteAccount,
+  } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     checkAuth();
@@ -103,6 +110,23 @@ const ProfilePage = () => {
                 <span className="text-green-500">Active</span>
               </div>
             </div>
+          </div>
+          <div className="mt-6 flex justify-end">
+            <button
+              className="btn btn-error"
+              onClick={async () => {
+                if (
+                  window.confirm(
+                    "Are you sure you want to delete your account? This action cannot be undone."
+                  )
+                ) {
+                  await deleteAccount();
+                  navigate("/signup");
+                }
+              }}
+            >
+              Delete Account
+            </button>
           </div>
         </div>
       </div>

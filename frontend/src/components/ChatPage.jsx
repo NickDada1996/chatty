@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Send } from "lucide-react";
 import { useMessageStore } from "../store/useMessageStore";
 import { socket } from "../lib/socket";
@@ -9,6 +9,7 @@ const ChatPage = () => {
     useMessageStore();
 
   const { authUser } = useAuthStore();
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (authUser?._id) {
@@ -32,6 +33,12 @@ const ChatPage = () => {
       socket.off("receive-message");
     };
   }, [selectedUser, getMessage]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleSendMessage = async () => {
     if (draft.trim()) {
@@ -85,6 +92,8 @@ const ChatPage = () => {
               </div>
             );
           })}
+
+          <div ref={messagesEndRef} />
         </div>
         <div className="p-4 border-t border-base-300 bg-base-100">
           <div className="flex gap-2 h-35">
