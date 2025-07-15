@@ -58,7 +58,7 @@ const ChatPage = () => {
     <div className="flex-1 flex flex-col bg-base-100">
       <div className="flex-1 flex flex-col rounded-xl shadow-sm overflow-hidden border border-base-300">
         {/* Chat Header */}
-        <div className="px-4 py-3 border-b border-base-300 bg-base-100">
+        <div className="px-4 py-3 border-b border-base-300 bg-base-100 shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content font-medium">
               {selectedUser?.fullName?.[0] || "N"}
@@ -71,8 +71,7 @@ const ChatPage = () => {
           </div>
         </div>
 
-        {/* Chat Messages */}
-        <div className="p-4 space-y-4 flex-1  overflow-y-auto bg-base-100">
+        <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-base-100">
           {messages.map((message, index) => {
             const isSent = message.sender !== selectedUser._id;
             return (
@@ -92,10 +91,10 @@ const ChatPage = () => {
               </div>
             );
           })}
-
           <div ref={messagesEndRef} />
         </div>
-        <div className="p-4 border-t border-base-300 bg-base-100">
+
+        <div className="p-4 border-t border-base-300 bg-base-100 shrink-0">
           <div className="flex gap-2 h-35">
             <input
               type="text"
