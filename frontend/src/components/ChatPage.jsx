@@ -55,7 +55,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className=" flex h-screen flex-col bg-base-100">
+    <div className=" flex flex-1 flex-col bg-base-100">
       <div className=" flex flex-col rounded-xl shadow-sm overflow-hidden border border-base-300">
         {/* Chat Header */}
         <div className="px-4 py-3 border-b border-base-300 bg-base-100 shrink-0">
@@ -71,7 +71,7 @@ const ChatPage = () => {
           </div>
         </div>
 
-        <div className="h-full p-4 space-y-4 overflow-y-auto bg-base-100">
+        <div className="h-full min-h-0 p-4 space-y-4 overflow-y-auto bg-base-100">
           {messages.map((message, index) => {
             const isSent = message.sender !== selectedUser._id;
             return (
@@ -95,7 +95,7 @@ const ChatPage = () => {
         </div>
 
         <div className="p-4 border-t border-base-300 bg-base-100 shrink-0">
-          <div className="flex gap-2 h-35">
+          <div className="flex gap-2">
             <input
               type="text"
               className="input input-bordered flex-1 text-sm h-10"

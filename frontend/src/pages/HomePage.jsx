@@ -14,7 +14,7 @@ const HomePage = () => {
   return (
     <div className="min-h-[calc(100vh-64px)] bg-base-100">
       <div className="max-w-7xl mx-auto h-[calc(100vh-64px)] flex flex-col">
-        <div className="flex flex-1 overflow-hidden rounded-xl shadow-lg border border-base-200 m-4">
+        <div className="flex h-full flex-1 overflow-hidden rounded-xl shadow-lg border border-base-200 m-4">
           {/* Sidebar */}
           <div className="bg-base-200 w-64 flex flex-col p-4 border-r border-base-200">
             <div className="space-y-2">
