@@ -49,7 +49,7 @@ const HomePage = () => {
             </ul>
           </div>
           {/* Chat Area */}
-          <div className="flex-1 flex flex-col">
+          <div className=" h-full flex flex-col">
             {selectedUser ? (
               <ChatPage />
             ) : (
