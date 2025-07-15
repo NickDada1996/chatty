@@ -8,20 +8,25 @@ const ChatPage = () => {
   const { selectedUser, draft, setDraft, addMessage, messages, getMessage } =
     useMessageStore();
 
-const {authUser} = useAuthStore();
+  const { authUser } = useAuthStore();
 
-  
+  useEffect(() => {
+    if (authUser?._id) {
+      socket.emit("join", authUser._id);
+    }
+  }, [authUser]);
+
   useEffect(() => {
     if (selectedUser?._id) {
-      socket.emit("join", selectedUser._id);
+      getMessage(selectedUser);
     }
-  }, [selectedUser]);
+  }, [selectedUser, getMessage]);
 
-  
   useEffect(() => {
     socket.on("receive-message", () => {
-      
-      getMessage(selectedUser);
+      if (selectedUser?._id) {
+        getMessage(selectedUser);
+      }
     });
     return () => {
       socket.off("receive-message");
@@ -30,16 +35,15 @@ const {authUser} = useAuthStore();
 
   const handleSendMessage = async () => {
     if (draft.trim()) {
-      
       await addMessage(draft, selectedUser._id);
-
-      
-      const senderId = authUser?._id 
+      const senderId = authUser?._id;
       socket.emit("send-message", {
         content: draft,
         sender: senderId,
         receiver: selectedUser._id,
       });
+
+      getMessage(selectedUser);
     }
   };
 
@@ -56,7 +60,6 @@ const {authUser} = useAuthStore();
               <h3 className="font-medium text-sm">
                 {selectedUser?.fullName || "User"}
               </h3>
-              
             </div>
           </div>
         </div>

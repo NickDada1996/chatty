@@ -12,6 +12,6 @@ router.get("/users", protectRoute, getUsersForSidebar);
 
 router.post("/addMessage", protectRoute, addMessage);
 
-router.get("/getmessage/:id", protectRoute, getMessage);
+router.get("/getMessage/:id", protectRoute, getMessage);
 
 export default router;
