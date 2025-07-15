@@ -55,7 +55,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-base-100">
+    <div className="flex-1 flex flex-col bg-base-100">
       <div className="flex-1 flex flex-col rounded-xl shadow-sm overflow-hidden border border-base-300">
         {/* Chat Header */}
         <div className="px-4 py-3 border-b border-base-300 bg-base-100">
